@@ -4,14 +4,14 @@ import co.com.crediya.model.role.Role;
 import co.com.crediya.model.role.gateways.RoleRepository;
 import co.com.crediya.r2dbc.mapper.RoleMapper;
 import co.com.crediya.r2dbc.repository.RoleReactiveRepository;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 
 @Repository
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RoleR2DBCRepositoryAdapter implements RoleRepository {
     private final RoleReactiveRepository roleReactiveRepository;
     private final RoleMapper roleMapper;
