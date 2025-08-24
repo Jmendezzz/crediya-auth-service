@@ -21,8 +21,8 @@ public class RoleSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) {
         List<String> roles = List.of(
-                RoleConstant.ADMINISTRADOR,
-                RoleConstant.SOLICITANTE
+                RoleConstant.ADMINISTRATOR,
+                RoleConstant.APPLICANT
         );
 
         Flux.fromIterable(roles)

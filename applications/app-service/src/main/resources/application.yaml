@@ -1,21 +1,30 @@
-##Spring Configuration
 server:
   port: 8080
 spring:
   application:
-    name: CrediYa
+    name: "CrediYa"
   devtools:
     add-properties: false
   profiles:
-    include:
+    include: null
   sql:
     init:
-      mode: always
-      schema-locations: schema.sql
+      mode: "always"
+      schema-locations: "schema.sql"
 database:
-  host: ${AUTH_SERVICE_DB_HOST}
-  port: ${AUTH_SERVICE_DB_PORT}
-  username: ${AUTH_SERVICE_DB_USERNAME}
-  password: ${AUTH_SERVICE_DB_PASSWORD}
-  name: ${AUTH_SERVICE_DB_NAME}
-
+  host: "${AUTH_SERVICE_DB_HOST}"
+  port: "${AUTH_SERVICE_DB_PORT}"
+  username: "${AUTH_SERVICE_DB_USERNAME}"
+  password: "${AUTH_SERVICE_DB_PASSWORD}"
+  name: "${AUTH_SERVICE_DB_NAME}"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,prometheus"
+  endpoint:
+    health:
+      probes:
+        enabled: true
+cors:
+  allowed-origins: "http://localhost:4200,http://localhost:8080"
