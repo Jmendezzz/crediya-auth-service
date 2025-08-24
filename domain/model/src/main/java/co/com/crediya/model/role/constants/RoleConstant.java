@@ -1,6 +1,6 @@
 package co.com.crediya.model.role.constants;
 
 public class RoleConstant {
-    public static final String ADMINISTRADOR = "ADMINISTRADOR";
-    public static final String SOLICITANTE = "SOLICITANTE";
+    public static final String ADMINISTRATOR = "ADMINISTRADOR";
+    public static final String APPLICANT = "SOLICITANTE";
 }
