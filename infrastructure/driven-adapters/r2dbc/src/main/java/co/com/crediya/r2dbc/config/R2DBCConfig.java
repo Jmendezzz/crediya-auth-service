@@ -11,21 +11,29 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class R2DBCConfig {
 
-    @Value("${database.host}")
-    private String host;
+    private final String host;
 
-    @Value("${database.port}")
-    private Integer port;
+    private final Integer port;
 
-    @Value("${database.username}")
-    private String username;
+    private final String username;
 
-    @Value("${database.password}")
-    private String password;
+    private final String password;
 
-    @Value("${database.name}")
-    private String database;
+    private final String database;
 
+
+    public R2DBCConfig(
+            @Value("${database.host}") String host,
+            @Value("${database.port}") Integer port,
+            @Value("${database.username}") String username,
+            @Value("${database.password}") String password,
+            @Value("${database.name}") String database){
+        this.host = host;
+        this.port = port;
+        this.username = username;
+        this.password = password;
+        this.database = database;
+    }
 
     @Bean
     public ConnectionFactory connectionFactory() {
