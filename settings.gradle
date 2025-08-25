@@ -22,3 +22,7 @@ project(':model').projectDir = file('./domain/model')
 project(':usecase').projectDir = file('./domain/usecase')
 include ':r2dbc'
 project(':r2dbc').projectDir = file('./infrastructure/driven-adapters/r2dbc')
+include ':password-encoder'
+project(':password-encoder').projectDir = file('./infrastructure/driven-adapters/password-encoder')
+include ':reactive-web'
+project(':reactive-web').projectDir = file('./infrastructure/entry-points/reactive-web')
