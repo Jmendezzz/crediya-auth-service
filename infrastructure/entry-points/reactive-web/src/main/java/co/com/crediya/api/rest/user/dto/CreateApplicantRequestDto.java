@@ -25,7 +25,7 @@ public record CreateApplicantRequestDto(
         @Schema(description = UserOpenApiSchema.PHONE_NUMBER_DESCRIPTION, example = UserOpenApiSchema.PHONE_NUMBER_EXAMPLE)
         String phoneNumber,
 
-        @Future(message = UserValidationMessage.BIRTHDATE_INVALID)
+        @Past(message = UserValidationMessage.BIRTHDATE_INVALID)
         @Schema(description = UserOpenApiSchema.BIRTHDATE_DESCRIPTION, example = UserOpenApiSchema.BIRTHDATE_EXAMPLE)
         LocalDate birthdate,
 
