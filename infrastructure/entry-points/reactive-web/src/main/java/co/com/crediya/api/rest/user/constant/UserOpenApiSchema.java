@@ -1,6 +1,7 @@
 package co.com.crediya.api.rest.user.constant;
 
 public class UserOpenApiSchema {
+    public static final String ID_DESCRIPTION = "ID del solicitante";
     public static final String FIRST_NAME_DESCRIPTION = "Nombres del solicitante";
     public static final String LAST_NAME_DESCRIPTION = "Apellidos del solicitante";
     public static final String IDENTITY_NUMBER_DESCRIPTION = "Número de identificación del solicitante";
