@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.reactive.function.server.RouterFunction;
 import org.springframework.web.reactive.function.server.ServerResponse;
 
+import static com.fasterxml.jackson.databind.type.LogicalType.Map;
+
 
 @Configuration
 public class UserRoute {
@@ -29,6 +31,18 @@ public class UserRoute {
                                 ),
                         ops -> UserOpenApiConfig.createApplicantDocsConsumer().accept(ops)
                 )
+                .GET(UserEndpoint.EXISTS_BY_IDENTITY_NUMBER.getPath(),
+                        req -> {
+                            String identityNumber = req.pathVariable("identityNumber");
+                            return handler.existsByIdentityNumber(identityNumber)
+                                    .flatMap(responseDto -> ServerResponse.ok()
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .bodyValue(responseDto)
+                                    );
+                        },
+                        ops -> UserOpenApiConfig.existsByIdentityNumberDocsConsumer().accept(ops)
+                )
+
                 .build();
     }
 }

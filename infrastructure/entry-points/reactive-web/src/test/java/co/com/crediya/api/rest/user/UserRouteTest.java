@@ -1,5 +1,6 @@
 package co.com.crediya.api.rest.user;
 
+import co.com.crediya.api.rest.user.constant.UserEndpoint;
 import co.com.crediya.api.rest.user.dto.CreateApplicantRequestDto;
 import co.com.crediya.api.rest.user.dto.UserResponseDto;
 import co.com.crediya.model.role.Role;
@@ -59,17 +60,11 @@ class UserRouteTest {
                 5_000_000L, "juan@test.com", user.getRole()
         );
 
-        when(userHandler.createApplicant(any())).thenReturn(
-                Mono.just(ServerResponse
-                        .created(null)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .bodyValue(responseDto)
-                        .block())
-        );
+        when(userHandler.createApplicant(any(CreateApplicantRequestDto.class)))
+                .thenReturn(Mono.just(responseDto));
 
-        // when/then
         webTestClient.post()
-                .uri("/api/v1/users/create-applicant")
+                .uri(UserEndpoint.CREATE_APPLICANT.getPath())
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(requestDto)
                 .exchange()
@@ -81,6 +76,7 @@ class UserRouteTest {
                     org.assertj.core.api.Assertions.assertThat(res.firstName()).isEqualTo("Juan");
                 });
 
-        verify(userHandler, times(1)).createApplicant(any());
+        verify(userHandler, times(1)).createApplicant(any(CreateApplicantRequestDto.class));
     }
+
 }

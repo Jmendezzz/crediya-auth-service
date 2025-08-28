@@ -11,6 +11,12 @@ public enum UserEndpoint {
             "createApplicant",
             "Crear solicitante",
             "Registra un nuevo solicitante en el sistema"
+    ),
+    EXISTS_BY_IDENTITY_NUMBER(
+            "/{identityNumber}/exists",
+            "existsByIdentityNumber",
+            "Validar existencia de usuario",
+            "Valida si un usuario con el número de identificación dado existe en el sistema"
     );
 
     private final String path;

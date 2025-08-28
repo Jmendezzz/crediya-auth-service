@@ -7,4 +7,5 @@ public interface UserRepository {
     Mono<User> findByEmail(String email);
     Mono<User> findByIdentityNumber(String identityNumber);
     Mono<User> save(User user);
+    Mono<Boolean> existsByIdentityNumber(String identityNumber);
 }

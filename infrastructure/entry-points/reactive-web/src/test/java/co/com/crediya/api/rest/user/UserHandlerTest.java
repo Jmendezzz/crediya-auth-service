@@ -69,10 +69,10 @@ class UserHandlerTest {
     }
 
     @Test
-    void shouldCreateApplicantSuccessfully() throws Exception {
+    void shouldCreateApplicantSuccessfully() {
         CreateApplicantRequestDto requestDto = new CreateApplicantRequestDto(
                 "Juan", "Mendez", "123456", "3001234567",
-                LocalDate.now().plusYears(1), "Calle 123",
+                LocalDate.now().minusYears(20), "Calle 123",
                 5_000_000L, "juan@test.com"
         );
 
@@ -82,7 +82,7 @@ class UserHandlerTest {
                 .lastName("Mendez")
                 .identityNumber("123456")
                 .phoneNumber("3001234567")
-                .birthdate(LocalDate.now().plusYears(1))
+                .birthdate(LocalDate.now().minusYears(20))
                 .address("Calle 123")
                 .baseSalary(5_000_000L)
                 .email("juan@test.com")
@@ -100,34 +100,27 @@ class UserHandlerTest {
         when(userUseCase.createApplicant(any(User.class))).thenReturn(Mono.just(user));
         when(responseMapper.toDto(any(User.class))).thenReturn(responseDto);
 
-        ServerRequest serverRequest = buildRequest(requestDto);
+        Mono<UserResponseDto> result = userHandler.createApplicant(requestDto);
 
-        Mono<ServerResponse> response = userHandler.createApplicant(serverRequest);
-
-        StepVerifier.create(response)
-                .assertNext(serverResponse ->
-                        org.assertj.core.api.Assertions.assertThat(serverResponse.statusCode())
-                                .isEqualTo(HttpStatus.CREATED))
+        StepVerifier.create(result)
+                .expectNext(responseDto)
                 .verifyComplete();
 
         verify(userUseCase, times(1)).createApplicant(any(User.class));
     }
 
     @Test
-    void shouldFailValidationWhenMissingFields() throws Exception {
-        CreateApplicantRequestDto requestDto = new CreateApplicantRequestDto(
+    void shouldFailValidationWhenMissingFields() {
+        CreateApplicantRequestDto invalidDto = new CreateApplicantRequestDto(
                 "", "", "", "", LocalDate.now().minusYears(1),
                 "", -10L, "bad-email"
         );
 
-        ServerRequest serverRequest = buildRequest(requestDto);
+        Mono<UserResponseDto> result = userHandler.createApplicant(invalidDto);
 
-        Mono<ServerResponse> response = userHandler.createApplicant(serverRequest);
-
-        StepVerifier.create(response)
-                .expectErrorSatisfies(throwable ->
-                        org.assertj.core.api.Assertions.assertThat(throwable)
-                                .isInstanceOf(jakarta.validation.ConstraintViolationException.class))
+        StepVerifier.create(result)
+                .expectError(jakarta.validation.ConstraintViolationException.class)
                 .verify();
     }
+
 }

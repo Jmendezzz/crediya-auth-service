@@ -1,6 +1,7 @@
 package co.com.crediya.api.rest.user;
 
 import co.com.crediya.api.rest.user.dto.CreateApplicantRequestDto;
+import co.com.crediya.api.rest.user.dto.UserExistsResponseDto;
 import co.com.crediya.api.rest.user.dto.UserResponseDto;
 import co.com.crediya.api.rest.user.mapper.UserRequestMapper;
 import co.com.crediya.api.rest.user.mapper.UserResponseMapper;
@@ -26,5 +27,9 @@ public class UserHandler {
                 .map(requestMapper::toDomain)
                 .flatMap(userUseCase::createApplicant)
                 .map(responseMapper::toDto);
+    }
+
+    public Mono<UserExistsResponseDto> existsByIdentityNumber(String identityNumber){
+        return userUseCase.existsByIdentityNumber(identityNumber).map(UserExistsResponseDto::new);
     }
 }

@@ -38,4 +38,9 @@ public class UserUseCase {
             return Mono.empty();
         });
     }
+
+    public Mono<Boolean> existsByIdentityNumber(String identityNumber) {
+        return userRepository.findByIdentityNumber(identityNumber)
+                .hasElement();
+    }
 }
