@@ -42,6 +42,12 @@ public class UserR2DBCRepositoryAdapter implements UserRepository {
                 .flatMap(this::enrichWithRole);
     }
 
+
+    @Override
+    public Mono<Boolean> existsByIdentityNumber(String identityNumber) {
+        return userReactiveRepository.existsByIdentityNumber(identityNumber);
+    }
+
     private Mono<User> enrichWithRole(UserEntity userEntity) {
         return roleReactiveRepository.findById(userEntity.getRoleId())
                 .map(roleEntity -> userMapper.toDomain(
