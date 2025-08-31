@@ -105,5 +105,26 @@ class UserUseCaseTest {
                 .verify();
     }
 
+
+    @Test
+    void shouldReturnTrueWhenUserWithIdentityNumberExists() {
+        when(userRepository.findByIdentityNumber(user.getIdentityNumber()))
+                .thenReturn(Mono.just(user));
+
+        StepVerifier.create(userUseCase.existsByIdentityNumber(user.getIdentityNumber()))
+                .expectNext(true)
+                .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnFalseWhenUserWithIdentityNumberDoesNotExist() {
+        when(userRepository.findByIdentityNumber(user.getIdentityNumber()))
+                .thenReturn(Mono.empty());
+
+        StepVerifier.create(userUseCase.existsByIdentityNumber(user.getIdentityNumber()))
+                .expectNext(false)
+                .verifyComplete();
+    }
+
     
 }
