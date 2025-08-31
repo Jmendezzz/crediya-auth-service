@@ -54,6 +54,7 @@ public class GlobalExceptionHandler implements ErrorWebExceptionHandler {
                                 "message", Optional.ofNullable(ex.getMessage())
                                         .orElse("Unexpected error"))));
 
+
         exchange.getResponse().setStatusCode(response.status());
         exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_JSON);
 

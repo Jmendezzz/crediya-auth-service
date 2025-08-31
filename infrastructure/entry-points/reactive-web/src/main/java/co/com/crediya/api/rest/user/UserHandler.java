@@ -1,5 +1,6 @@
 package co.com.crediya.api.rest.user;
 
+import co.com.crediya.api.rest.user.constant.UserHandlerLog;
 import co.com.crediya.api.rest.user.dto.CreateApplicantRequestDto;
 import co.com.crediya.api.rest.user.dto.UserExistsResponseDto;
 import co.com.crediya.api.rest.user.dto.UserResponseDto;
@@ -24,12 +25,23 @@ public class UserHandler {
 
     public Mono<UserResponseDto> createApplicant(CreateApplicantRequestDto dto) {
         return validator.validate(dto)
+                .doOnSubscribe(s -> log.info(UserHandlerLog.CREATE_VALIDATION.getMessage()))
                 .map(requestMapper::toDomain)
+                .doOnNext(domain -> log.info(UserHandlerLog.CREATE_REQUEST.getMessage(), dto))
                 .flatMap(userUseCase::createApplicant)
+                .doOnSuccess(user -> log.info(UserHandlerLog.CREATE_SUCCESS.getMessage(), user.getId()))
+                .doOnError(error -> log.error(UserHandlerLog.CREATE_ERROR.getMessage(), error.getMessage(), error))
                 .map(responseMapper::toDto);
     }
 
-    public Mono<UserExistsResponseDto> existsByIdentityNumber(String identityNumber){
-        return userUseCase.existsByIdentityNumber(identityNumber).map(UserExistsResponseDto::new);
+    public Mono<UserExistsResponseDto> existsByIdentityNumber(String identityNumber) {
+        log.info(UserHandlerLog.EXISTS_REQUEST.getMessage(), identityNumber);
+
+        return userUseCase.existsByIdentityNumber(identityNumber)
+                .map(exists -> {
+                    log.info(UserHandlerLog.EXISTS_SUCCESS.getMessage(), identityNumber, exists);
+                    return new UserExistsResponseDto(exists);
+                })
+                .doOnError(error -> log.error(UserHandlerLog.EXISTS_ERROR.getMessage(), identityNumber, error.getMessage(), error));
     }
 }
