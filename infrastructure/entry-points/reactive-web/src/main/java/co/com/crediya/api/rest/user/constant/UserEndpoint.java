@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum UserEndpoint {
     CREATE_APPLICANT(
-             "/applicants",
+             "/create-applicant",
             "createApplicant",
             "Crear solicitante",
             "Registra un nuevo solicitante en el sistema"

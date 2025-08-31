@@ -6,7 +6,10 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ApiResource {
-    USERS("/users");
+    USERS("/users"),
+    AUTH("/auth");
 
     private final String resource;
+
+
 }
