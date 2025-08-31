@@ -10,7 +10,9 @@ buildscript {
         mapstructVersion = '1.6.3'
         springSecurityCryptoVersion = '6.3.0'
         openApiWebfluxVersion = '2.5.0'
-	}
+        jwtVersion = '0.12.3'
+        contextPropagationVersion = '1.1.0'
+    }
 }
 
 plugins {
