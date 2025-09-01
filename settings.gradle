@@ -30,3 +30,5 @@ include ':jwt'
 project(':jwt').projectDir = file('./infrastructure/driven-adapters/jwt')
 include ':logging'
 project(':logging').projectDir = file('./infrastructure/helpers/logging')
+include ':auth-context'
+project(':auth-context').projectDir = file('./infrastructure/driven-adapters/auth-context')
