@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationManager {
 
     private final TokenService tokenService;
+    private final String ROLE_PREFIX = "ROLE_";
 
     public JwtReactiveAuthenticationManager(TokenService tokenService) {
         this.tokenService = tokenService;
@@ -32,13 +33,14 @@ public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationM
                 });
     }
     private Mono<Authentication> buildAuthentication(String token) {
-        String username = tokenService.extractUsername(token);
+        Long userId = tokenService.extractUserId(token);
         List<String> roles = tokenService.extractRoles(token);
 
         List<GrantedAuthority> authorities = roles.stream()
+                .map(role -> role.startsWith(ROLE_PREFIX) ? role : ROLE_PREFIX + role)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        return Mono.just(new UsernamePasswordAuthenticationToken(username, null, authorities));
+        return Mono.just(new UsernamePasswordAuthenticationToken(userId, token, authorities));
     }
 }

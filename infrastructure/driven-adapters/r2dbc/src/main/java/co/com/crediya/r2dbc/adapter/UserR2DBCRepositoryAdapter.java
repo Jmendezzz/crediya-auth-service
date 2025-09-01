@@ -38,6 +38,12 @@ public class UserR2DBCRepositoryAdapter implements UserRepository {
     }
 
     @Override
+    public Mono<User> findById(Long id) {
+        return userReactiveRepository.findById(id)
+                .flatMap(this::enrichWithRole);
+    }
+
+    @Override
     public Mono<User> findByEmail(String email) {
         log.debug(UserRepositoryLog.FIND_BY_EMAIL.getMessage(), email);
 

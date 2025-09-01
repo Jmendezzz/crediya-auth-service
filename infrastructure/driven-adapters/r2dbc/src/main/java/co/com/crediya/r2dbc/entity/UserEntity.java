@@ -1,6 +1,7 @@
 package co.com.crediya.r2dbc.entity;
 
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
@@ -8,6 +9,7 @@ import java.time.LocalDate;
 @Data
 @Table(name = "users")
 public class UserEntity {
+    @Id
     private Long id;
     private String firstName;
     private String lastName;

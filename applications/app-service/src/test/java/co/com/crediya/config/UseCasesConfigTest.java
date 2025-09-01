@@ -1,5 +1,6 @@
 package co.com.crediya.config;
 
+import co.com.crediya.model.auth.gateways.AuthContext;
 import co.com.crediya.model.auth.gateways.PasswordMatcher;
 import co.com.crediya.model.auth.gateways.TokenService;
 import co.com.crediya.model.role.gateways.RoleRepository;
@@ -22,6 +23,7 @@ public class UseCasesConfigTest {
         PasswordEncoder passwordEncoder = Mockito.mock(PasswordEncoder.class);
         PasswordMatcher passwordMatcher = Mockito.mock(PasswordMatcher.class);
         TokenService tokenService = Mockito.mock(TokenService.class);
+        AuthContext authContext = Mockito.mock(AuthContext.class);
 
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         context.registerBean(UserRepository.class, () -> userRepository);
@@ -29,6 +31,7 @@ public class UseCasesConfigTest {
         context.registerBean(PasswordEncoder.class, () -> passwordEncoder);
         context.registerBean(PasswordMatcher.class, () -> passwordMatcher);
         context.registerBean(TokenService.class, () -> tokenService);
+        context.registerBean(AuthContext.class, () -> authContext);
         context.register(UseCasesConfig.class);
         context.refresh();
 

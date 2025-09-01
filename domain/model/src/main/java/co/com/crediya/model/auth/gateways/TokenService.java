@@ -8,5 +8,6 @@ public interface TokenService {
     String generateToken(User user);
     boolean validateToken(String token);
     String extractUsername(String token);
+    Long extractUserId(String token);
     List<String> extractRoles(String token);
 }

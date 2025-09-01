@@ -2,6 +2,7 @@ package co.com.crediya.api.security.config;
 
 import co.com.crediya.api.constant.ApiResource;
 import co.com.crediya.api.constant.ApiVersion;
+import co.com.crediya.api.rest.auth.constant.AuthEndpoint;
 import co.com.crediya.api.rest.user.constant.UserEndpoint;
 import co.com.crediya.api.security.handler.AuthenticationHandler;
 import co.com.crediya.api.security.handler.AuthorizationHandler;
@@ -32,7 +33,7 @@ public class SecurityConfig {
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers(ApiPath.path(ApiVersion.V1, ApiResource.AUTH, "/**")).permitAll()
+                        .pathMatchers(AuthEndpoint.LOGIN.getPath()).permitAll()
                         .pathMatchers(UserEndpoint.CREATE_APPLICANT.getPath())
                         .hasRole(RoleConstant.ADMINISTRATOR)
                         .anyExchange().authenticated()

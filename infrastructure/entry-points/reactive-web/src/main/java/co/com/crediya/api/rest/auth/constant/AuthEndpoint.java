@@ -13,6 +13,12 @@ public enum AuthEndpoint {
             "login",
             "Iniciar Sesión",
             "Permite el inicio de sesión en el sistema"
+    ),
+    ME(
+            "/me",
+            "me",
+            "Mis detalles",
+            "Obtiene los detalles del usuario actualmente logueado"
     );
 
     private final String path;
