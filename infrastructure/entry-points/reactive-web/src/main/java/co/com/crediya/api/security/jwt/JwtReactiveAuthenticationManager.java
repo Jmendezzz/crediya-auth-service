@@ -33,7 +33,7 @@ public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationM
                 });
     }
     private Mono<Authentication> buildAuthentication(String token) {
-        String username = tokenService.extractUsername(token);
+        Long userId = tokenService.extractUserId(token);
         List<String> roles = tokenService.extractRoles(token);
 
         List<GrantedAuthority> authorities = roles.stream()
@@ -41,6 +41,6 @@ public class JwtReactiveAuthenticationManager implements ReactiveAuthenticationM
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        return Mono.just(new UsernamePasswordAuthenticationToken(username, null, authorities));
+        return Mono.just(new UsernamePasswordAuthenticationToken(userId, token, authorities));
     }
 }

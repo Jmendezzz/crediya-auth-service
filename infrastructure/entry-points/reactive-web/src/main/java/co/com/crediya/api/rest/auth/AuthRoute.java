@@ -28,6 +28,16 @@ public class AuthRoute {
                                 ),
                         ops -> AuthOpenApiConfig.loginDocsConsumer().accept(ops)
                 )
+                .GET(AuthEndpoint.ME.getPath(),
+                        req -> handler.me()
+                                .flatMap(dto ->
+                                        ServerResponse
+                                                .status(HttpStatus.OK)
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .bodyValue(dto)
+                                ),
+                        ops -> AuthOpenApiConfig.meDocsConsumer().accept(ops)
+                        )
                 .build();
     }
 
