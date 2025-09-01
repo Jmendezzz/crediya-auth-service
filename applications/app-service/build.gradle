@@ -1,6 +1,7 @@
 apply plugin: 'org.springframework.boot'
 
 dependencies {
+	implementation project(':auth-context')
 	implementation project(':logging')
 	implementation project(':jwt')
 	implementation project(':reactive-web')

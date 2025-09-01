@@ -1,5 +1,6 @@
 package co.com.crediya.config;
 
+import co.com.crediya.model.auth.gateways.AuthContext;
 import co.com.crediya.model.auth.gateways.PasswordMatcher;
 import co.com.crediya.model.auth.gateways.TokenService;
 import co.com.crediya.model.role.gateways.RoleRepository;
@@ -30,11 +31,12 @@ public class UseCasesConfig {
         }
 
         @Bean
-        public AuthUseCase authUseCase(UserRepository userRepository, PasswordMatcher passwordMatcher, TokenService tokenService){
+        public AuthUseCase authUseCase(UserRepository userRepository, PasswordMatcher passwordMatcher, TokenService tokenService, AuthContext authContext){
                 return new AuthUseCase(
                         userRepository,
                         passwordMatcher,
-                        tokenService
+                        tokenService,
+                        authContext
                 );
         }
 }
