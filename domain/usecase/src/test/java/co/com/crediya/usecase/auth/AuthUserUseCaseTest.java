@@ -2,6 +2,7 @@ package co.com.crediya.usecase.auth;
 
 import co.com.crediya.model.auth.command.LoginCommand;
 import co.com.crediya.model.auth.exceptions.InvalidCredentialsException;
+import co.com.crediya.model.auth.gateways.AuthContext;
 import co.com.crediya.model.auth.gateways.PasswordMatcher;
 import co.com.crediya.model.auth.gateways.TokenService;
 import co.com.crediya.model.role.Role;
@@ -18,6 +19,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,6 +36,9 @@ class AuthUseCaseTest {
 
     @InjectMocks
     private AuthUseCase authUseCase;
+
+    @Mock
+    private AuthContext authContext;
 
     private User user;
 
@@ -83,5 +88,31 @@ class AuthUseCaseTest {
         StepVerifier.create(authUseCase.login(command))
                 .expectError(InvalidCredentialsException.class)
                 .verify();
+    }
+
+    @Test
+    void shouldReturnCurrentUserWhenCallingMe() {
+        when(authContext.getCurrentUserId()).thenReturn(Mono.just(1L));
+        when(userRepository.findById(1L)).thenReturn(Mono.just(user));
+
+        StepVerifier.create(authUseCase.me())
+                .expectNextMatches(u -> u.getId().equals(1L) &&
+                        u.getEmail().equals("juan@test.com"))
+                .verifyComplete();
+
+        verify(authContext).getCurrentUserId();
+        verify(userRepository).findById(1L);
+    }
+
+    @Test
+    void shouldReturnEmptyWhenUserNotFoundInMe() {
+        when(authContext.getCurrentUserId()).thenReturn(Mono.just(99L));
+        when(userRepository.findById(99L)).thenReturn(Mono.empty());
+
+        StepVerifier.create(authUseCase.me())
+                .verifyComplete();
+
+        verify(authContext).getCurrentUserId();
+        verify(userRepository).findById(99L);
     }
 }
