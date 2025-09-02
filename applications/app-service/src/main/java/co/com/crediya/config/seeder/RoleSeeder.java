@@ -6,6 +6,7 @@ import co.com.crediya.model.role.gateways.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Flux;
 
@@ -14,13 +15,14 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 @Slf4j
+@Order(1)
 public class RoleSeeder implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
 
     @Override
     public void run(String... args) {
-        seedRoles().subscribe();
+        seedRoles().blockLast();
     }
 
     public  Flux<Role> seedRoles() {
