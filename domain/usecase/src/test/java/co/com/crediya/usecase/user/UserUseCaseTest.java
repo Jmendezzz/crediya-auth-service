@@ -7,6 +7,7 @@ import co.com.crediya.model.role.gateways.RoleRepository;
 import co.com.crediya.model.user.User;
 import co.com.crediya.model.user.exceptions.UserEmailAlreadyExistsException;
 import co.com.crediya.model.user.exceptions.UserIdentityNumberAlreadyExistsException;
+import co.com.crediya.model.user.exceptions.UserNotFoundException;
 import co.com.crediya.model.user.gateways.PasswordEncoder;
 import co.com.crediya.model.user.gateways.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,6 +20,7 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -124,6 +126,32 @@ class UserUseCaseTest {
         StepVerifier.create(userUseCase.existsByIdentityNumber(user.getIdentityNumber()))
                 .expectNext(false)
                 .verifyComplete();
+    }
+
+    @Test
+    void shouldReturnUserWhenIdentityNumberExists() {
+        when(userRepository.findByIdentityNumber(user.getIdentityNumber()))
+                .thenReturn(Mono.just(user));
+
+        StepVerifier.create(userUseCase.getByIdentityNumber(user.getIdentityNumber()))
+                .expectNextMatches(found ->
+                        found.getIdentityNumber().equals(user.getIdentityNumber()) &&
+                                found.getFirstName().equals("Juan"))
+                .verifyComplete();
+
+        verify(userRepository).findByIdentityNumber(user.getIdentityNumber());
+    }
+
+    @Test
+    void shouldThrowExceptionWhenIdentityNumberDoesNotExist() {
+        when(userRepository.findByIdentityNumber(user.getIdentityNumber()))
+                .thenReturn(Mono.empty());
+
+        StepVerifier.create(userUseCase.getByIdentityNumber(user.getIdentityNumber()))
+                .expectError(UserNotFoundException.class)
+                .verify();
+
+        verify(userRepository).findByIdentityNumber(user.getIdentityNumber());
     }
 
     
