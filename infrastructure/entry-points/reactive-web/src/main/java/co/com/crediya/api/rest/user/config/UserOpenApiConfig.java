@@ -52,6 +52,22 @@ public class UserOpenApiConfig {
                 );
     }
 
+    public static Consumer<Builder> getByIdentityNumberDocsConsumer() {
+        return ops -> ops
+                .operationId(UserEndpoint.GET_BY_IDENTITY_NUMBER.getOperationId())
+                .summary(UserEndpoint.GET_BY_IDENTITY_NUMBER.getSummary())
+                .description(UserEndpoint.GET_BY_IDENTITY_NUMBER.getDescription())
+                .response(responseBuilder()
+                        .responseCode(HttpStatus.OK.name())
+                        .content(contentBuilder()
+                                .mediaType(MediaType.APPLICATION_JSON_VALUE)
+                                .schema(schemaBuilder()
+                                        .implementation(UserResponseDto.class)
+                                )
+                        )
+                );
+    }
+
     public static Consumer<Builder> existsByIdentityNumberDocsConsumer() {
         return ops -> ops
                 .operationId(UserEndpoint.EXISTS_BY_IDENTITY_NUMBER.getOperationId())

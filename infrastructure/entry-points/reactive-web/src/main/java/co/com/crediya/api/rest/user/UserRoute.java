@@ -31,6 +31,17 @@ public class UserRoute {
                                 ),
                         ops -> UserOpenApiConfig.createApplicantDocsConsumer().accept(ops)
                 )
+                .GET(UserEndpoint.GET_BY_IDENTITY_NUMBER.getPath(),
+                        req -> {
+                            String identityNumber = req.pathVariable("identityNumber");
+                            return handler.getByIdentityNumber(identityNumber)
+                                    .flatMap(dto -> ServerResponse.ok()
+                                            .contentType(MediaType.APPLICATION_JSON)
+                                            .bodyValue(dto)
+                                    );
+                        },
+                        ops -> UserOpenApiConfig.getByIdentityNumberDocsConsumer().accept(ops)
+                )
                 .GET(UserEndpoint.EXISTS_BY_IDENTITY_NUMBER.getPath(),
                         req -> {
                             String identityNumber = req.pathVariable("identityNumber");
