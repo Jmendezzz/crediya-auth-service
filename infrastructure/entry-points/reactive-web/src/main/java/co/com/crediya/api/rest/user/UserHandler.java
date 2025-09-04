@@ -34,6 +34,14 @@ public class UserHandler {
                 .map(responseMapper::toDto);
     }
 
+    public Mono<UserResponseDto> getByIdentityNumber(String identityNumber) {
+        return userUseCase.getByIdentityNumber(identityNumber)
+                .doOnSubscribe(s -> log.info(UserHandlerLog.FIND_BY_IDENTITY_NUMBER_REQUEST.getMessage(), identityNumber))
+                .doOnError(error -> log.error(UserHandlerLog.FIND_BY_IDENTITY_NUMBER_ERROR.getMessage(), identityNumber, error.getMessage(), error))
+                .map(responseMapper::toDto);
+
+    }
+
     public Mono<UserExistsResponseDto> existsByIdentityNumber(String identityNumber) {
         log.info(UserHandlerLog.EXISTS_REQUEST.getMessage(), identityNumber);
 

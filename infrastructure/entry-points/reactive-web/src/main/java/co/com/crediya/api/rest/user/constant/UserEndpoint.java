@@ -12,6 +12,12 @@ public enum UserEndpoint {
             "Crear solicitante",
             "Registra un nuevo solicitante en el sistema"
     ),
+    GET_BY_IDENTITY_NUMBER(
+            "/{identityNumber}",
+            "getByIdentityNumber",
+            "Obtener usuario por número de identificación",
+            "Obtiene los datos completos de un usuario a partir de su número de identificación"
+    ),
     EXISTS_BY_IDENTITY_NUMBER(
             "/{identityNumber}/exists",
             "existsByIdentityNumber",

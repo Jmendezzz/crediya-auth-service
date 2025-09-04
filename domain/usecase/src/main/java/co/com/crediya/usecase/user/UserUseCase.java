@@ -6,6 +6,7 @@ import co.com.crediya.model.role.gateways.RoleRepository;
 import co.com.crediya.model.user.User;
 import co.com.crediya.model.user.exceptions.UserEmailAlreadyExistsException;
 import co.com.crediya.model.user.exceptions.UserIdentityNumberAlreadyExistsException;
+import co.com.crediya.model.user.exceptions.UserNotFoundException;
 import co.com.crediya.model.user.gateways.PasswordEncoder;
 import co.com.crediya.model.user.gateways.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,11 @@ public class UserUseCase {
             if (tuple.getT2()) return Mono.error(new UserIdentityNumberAlreadyExistsException(user.getIdentityNumber()));
             return Mono.empty();
         });
+    }
+
+    public Mono<User> getByIdentityNumber(String identityNumber){
+        return userRepository.findByIdentityNumber(identityNumber)
+                .switchIfEmpty(Mono.error(new UserNotFoundException()));
     }
 
     public Mono<Boolean> existsByIdentityNumber(String identityNumber) {
