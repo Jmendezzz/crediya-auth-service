@@ -1,5 +1,6 @@
 package co.com.crediya.api.security.config;
 
+import co.com.crediya.api.constant.ActuatorEndpoint;
 import co.com.crediya.api.constant.ApiResource;
 import co.com.crediya.api.constant.ApiVersion;
 import co.com.crediya.api.constant.OpenApiEndpoint;
@@ -40,6 +41,7 @@ public class SecurityConfig {
                                 OpenApiEndpoint.SWAGGER_UI_RESOURCES.getPath(),
                                 OpenApiEndpoint.WEB_JARS.getPath()
                         ).permitAll()
+                        .pathMatchers(ActuatorEndpoint.INFO.getPath(), ActuatorEndpoint.HEALTH.getPath()).permitAll()
                         .pathMatchers(AuthEndpoint.LOGIN.getPath()).permitAll()
                         .pathMatchers(UserEndpoint.CREATE_APPLICANT.getPath())
                         .hasRole(RoleConstant.ADMINISTRATOR)
