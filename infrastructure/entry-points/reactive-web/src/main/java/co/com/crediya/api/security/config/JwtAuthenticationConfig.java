@@ -1,5 +1,6 @@
 package co.com.crediya.api.security.config;
 
+import co.com.crediya.api.security.handler.AuthenticationHandler;
 import co.com.crediya.api.security.jwt.JwtReactiveAuthenticationManager;
 import co.com.crediya.api.security.jwt.JwtServerAuthenticationConverter;
 import co.com.crediya.model.auth.gateways.TokenService;
@@ -25,10 +26,17 @@ public class JwtAuthenticationConfig {
     @Bean
     public AuthenticationWebFilter jwtAuthenticationWebFilter(
             ReactiveAuthenticationManager jwtAuthenticationManager,
-            ServerAuthenticationConverter jwtServerAuthenticationConverter
+            ServerAuthenticationConverter jwtServerAuthenticationConverter,
+            AuthenticationHandler authenticationHandler
     ) {
         AuthenticationWebFilter filter = new AuthenticationWebFilter(jwtAuthenticationManager);
         filter.setServerAuthenticationConverter(jwtServerAuthenticationConverter);
+        filter.setAuthenticationFailureHandler((webFilterExchange, ex) ->
+                authenticationHandler.commence(
+                        webFilterExchange.getExchange(),
+                        ex
+                )
+        );
         return filter;
     }
 }
